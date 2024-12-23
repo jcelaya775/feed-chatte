@@ -1,4 +1,4 @@
-package com.jcelaya775.feedlouie
+package com.jcelaya775.feedchatte
 
 import android.app.Application
 import android.content.res.Configuration

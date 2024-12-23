@@ -1,11 +1,17 @@
-import { useFonts } from "expo-font";
-import { Slot } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { Slot, SplashScreen } from "expo-router";
 import "react-native-reanimated";
 import { SessionProvider } from "@/utils/auth/authContext";
-import { createTamagui, TamaguiProvider } from "@tamagui/core";
+import { useEffect } from "react";
+import { useFonts } from "expo-font";
+import { createTamagui, TamaguiProvider } from "tamagui";
 import { config } from "@tamagui/config/v3";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useColorScheme } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 const tamaguiConfig = createTamagui(config);
 
@@ -19,6 +25,7 @@ declare module "@tamagui/core" {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -35,9 +42,12 @@ export default function RootLayout() {
 
   return (
     <SessionProvider>
-      <TamaguiProvider config={tamaguiConfig} defaultTheme="dark_blue">
-        <Slot />
-      </TamaguiProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <TamaguiProvider config={tamaguiConfig} defaultTheme="dark_blue">
+          <Slot />
+          <StatusBar style="auto" />
+        </TamaguiProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 }

@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.jcelaya775.feedlouie'
+    namespace 'com.jcelaya775.feedchatte'
     defaultConfig {
-        applicationId 'com.jcelaya775.feedlouie'
+        applicationId 'com.jcelaya775.feedchatte'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

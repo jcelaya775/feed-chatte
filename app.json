@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "feed-louie",
-    "slug": "feed-louie",
+    "name": "feed-chatte",
+    "slug": "feed-chatte",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -10,14 +10,14 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.feed-louie"
+      "bundleIdentifier": "com.anonymous.feed-chatte"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jcelaya775.feedlouie"
+      "package": "com.jcelaya775.feedchatte"
     },
     "web": {
       "bundler": "metro",

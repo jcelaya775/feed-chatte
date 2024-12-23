@@ -1,4 +1,4 @@
-package com.jcelaya775.feedlouie
+package com.jcelaya775.feedchatte
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build
