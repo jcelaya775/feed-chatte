@@ -33,7 +33,6 @@ export default function AppLayout() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="home" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
     // <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
