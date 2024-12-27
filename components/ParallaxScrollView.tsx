@@ -29,7 +29,7 @@ export default function ParallaxScrollView({ children }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#333",
+    backgroundColor: "#222",
     justifyContent: "center",
     borderRadius: 24,
   },

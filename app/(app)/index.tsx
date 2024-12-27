@@ -18,6 +18,8 @@ import {
 import { useEffect } from "react";
 import { ThemedView } from "@/components/ThemedView";
 import { useSession } from "@/utils/auth/authContext";
+import { Button } from "tamagui";
+import { ThemedText } from "@/components/ThemedText";
 
 export const IMAGES = {
   chungusHungry: {
@@ -66,32 +68,32 @@ const messages: Message[] = [
     time: "12:00 pm",
     align: "right",
   },
-  {
-    message: "Jazmin fed mungus crackers.",
-    time: "5:00 pm",
-    align: "left",
-  },
-  {
-    message:
-      "Mom has fed the big chungus some crackers. It was a good time for him, today.",
-    time: "7:00 pm",
-    align: "left",
-  },
-  {
-    message: "Jorge fed the fat boy!",
-    time: "12:00 pm",
-    align: "right",
-  },
-  {
-    message: "Jazmin fed mungus crackers.",
-    time: "5:00 pm",
-    align: "left",
-  },
-  {
-    message: "Mom has fed the big chungus some crackers.",
-    time: "7:00 pm",
-    align: "left",
-  },
+  // {
+  //   message: "Jazmin fed mungus crackers.",
+  //   time: "5:00 pm",
+  //   align: "left",
+  // },
+  // {
+  //   message:
+  //     "Mom has fed the big chungus some crackers. It was a good time for him, today.",
+  //   time: "7:00 pm",
+  //   align: "left",
+  // },
+  // {
+  //   message: "Jorge fed the fat boy!",
+  //   time: "12:00 pm",
+  //   align: "right",
+  // },
+  // {
+  //   message: "Jazmin fed mungus crackers.",
+  //   time: "5:00 pm",
+  //   align: "left",
+  // },
+  // {
+  //   message: "Mom has fed the big chungus some crackers.",
+  //   time: "7:00 pm",
+  //   align: "left",
+  // },
 ];
 
 export default function HomeScreen() {
@@ -255,15 +257,7 @@ export default function HomeScreen() {
               flex: 2,
             }}
           >
-            <View
-              style={{
-                ...styles.inner,
-                // marginBottom: Math.max(insets.bottom),
-                // paddingBottom: Math.max(insets.bottom),
-                // marginTop: Math.max(insets.bottom, 32),
-                // paddingTop: Math.max(insets.bottom, 32),
-              }}
-            >
+            <View style={styles.inner}>
               <ParallaxScrollView>
                 {messages &&
                   messages.map((message, index) => (
@@ -276,6 +270,14 @@ export default function HomeScreen() {
                   ))}
               </ParallaxScrollView>
             </View>
+            <Button
+              style={{
+                marginHorizontal: 12,
+                borderRadius: 24,
+              }}
+            >
+              <ThemedText type="defaultSemiBold">Feed Louie! 🍔</ThemedText>
+            </Button>
           </View>
         </View>
       </SafeAreaView>

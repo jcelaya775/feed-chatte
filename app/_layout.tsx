@@ -57,7 +57,7 @@ export default function RootLayout() {
   return (
     <SessionProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <TamaguiProvider config={tamaguiConfig} defaultTheme="dark_blue">
+        <TamaguiProvider config={tamaguiConfig} defaultTheme="dark_green">
           <Slot />
           <StatusBar style="auto" />
         </TamaguiProvider>
