@@ -3,7 +3,7 @@
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 <div align="center">
-   <img src="./assets/images/screenshot.png" height="500">
+   <img src="./assets/images/screenshot.png" height="600">
 </div>
 
 ## Get started
