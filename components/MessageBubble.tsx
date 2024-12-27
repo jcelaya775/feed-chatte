@@ -4,12 +4,18 @@ import { StyleSheet, View } from "react-native";
 type Props = {
   message: string;
   // TODO: Change to DateTime or something
-  time: string;
+  time?: string;
   align?: "left" | "right";
+  triangle?: boolean;
 };
 
 // TODO: Fix bubble to size of text
-export default function MessageBubble({ message, time, align }: Props) {
+export default function MessageBubble({
+  message,
+  time,
+  align,
+  triangle,
+}: Props) {
   return (
     <View>
       <View
@@ -22,25 +28,29 @@ export default function MessageBubble({ message, time, align }: Props) {
       >
         <View style={styles.messageBubble}>
           <ThemedText>{message}</ThemedText>
-          {/*<View*/}
-          {/*  style={[*/}
-          {/*    styles.triangle,*/}
-          {/*    align === "left" ? { left: 18 } : { right: 18 },*/}
-          {/*  ]}*/}
-          {/*/>*/}
+          {triangle && (
+            <View
+              style={[
+                styles.triangle,
+                align === "left" ? { left: 18 } : { right: 18 },
+              ]}
+            />
+          )}
         </View>
       </View>
-      <ThemedText
-        style={[
-          styles.time,
-          { fontSize: 14 },
-          align === "left"
-            ? { alignSelf: "flex-start" }
-            : { alignSelf: "flex-end" },
-        ]}
-      >
-        {time}
-      </ThemedText>
+      {time && (
+        <ThemedText
+          style={[
+            styles.time,
+            { fontSize: 14 },
+            align === "left"
+              ? { alignSelf: "flex-start" }
+              : { alignSelf: "flex-end" },
+          ]}
+        >
+          {time}
+        </ThemedText>
+      )}
     </View>
   );
 }
@@ -63,6 +73,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   triangle: {
+    zIndex: -1,
     borderTopColor: "#1cb64a",
     position: "absolute",
     top: 32,

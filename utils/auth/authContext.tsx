@@ -31,8 +31,21 @@ export function SessionProvider({ children }: PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => {
+        signIn: async () => {
+          // TODO: Throw/return error/status
           // Perform sign-in logic here
+          // try {
+          //   console.log("Calling signIn...");
+          //   const signInResponse = await signIn();
+          //   console.log({ signInResponse });
+          //   if (signInResponse?.type === "success") {
+          //     console.log({ signInResponse });
+          //     setSession(signInResponse.data.idToken);
+          //   }
+          // } catch (error) {
+          //   console.error("Error in context signIn");
+          //   console.error(error);
+          // }
           setSession("xxx");
         },
         signOut: () => {

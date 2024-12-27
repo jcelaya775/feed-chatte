@@ -16,8 +16,9 @@ export default function SignIn() {
       return;
     }
 
-    // TODO
+    // TODO: Handle DB and signIn error
     signIn();
+    console.log("Sign-in successful");
     setName("");
     // Navigate after signing in. You may want to tweak this to ensure sign-in is
     // successful before navigating.

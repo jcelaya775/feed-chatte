@@ -12,10 +12,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.feed-chatte"
     },
-    "android":{
+    "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#444444"
       },
       "package": "com.jcelaya775.feedchatte"
     },
@@ -32,16 +32,13 @@
           "image": "./assets/images/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#444444"
         }
       ],
       "expo-font",
       "expo-secure-store",
       [
-        "@react-native-google-signin/google-signin",
-        {
-          "iosUrlScheme": "com.googleusercontent.apps._some_id_here_"
-        }
+        "@react-native-google-signin/google-signin"
       ]
     ],
     "experiments": {
@@ -52,7 +49,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "1947d374-0f7b-43ca-95b0-231a1a417b05"
+        "projectId": "d265884e-6776-4f73-8b5e-c19f253a809f"
       }
     }
   }

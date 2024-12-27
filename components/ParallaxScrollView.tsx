@@ -11,12 +11,16 @@ export default function ParallaxScrollView({ children }: Props) {
   // TODO: Make sure it scrolls to bottom initially
 
   useEffect(() => {
-    scrollRef.current?.scrollToEnd({ animated: false });
+    scrollRef.current?.scrollToEnd({ animated: true });
   }, []);
 
   return (
     <View style={styles.container}>
-      <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
+      <Animated.ScrollView
+        // contentContainerStyle={{ flex: 1 }}
+        ref={scrollRef}
+        scrollEventThrottle={16}
+      >
         <View style={styles.content}>{children}</View>
       </Animated.ScrollView>
     </View>
@@ -25,15 +29,17 @@ export default function ParallaxScrollView({ children }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: "#333",
+    justifyContent: "center",
+    borderRadius: 24,
   },
   header: {
     height: HEADER_HEIGHT,
     overflow: "hidden",
   },
   content: {
-    flex: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 16,
     gap: 16,
-    overflow: "hidden",
   },
 });
