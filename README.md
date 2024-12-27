@@ -1,6 +1,10 @@
-# Welcome to your Expo app 👋
+# Welcome to your Feed Chatte 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+
+<div align="center">
+   <img src="./assets/images/screenshot.png" height="500">
+</div>
 
 ## Get started
 
