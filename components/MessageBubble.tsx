@@ -3,8 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 type Props = {
   message: string;
-  // TODO: Change to DateTime or something
-  time?: string;
+  time?: Date;
   align?: "left" | "right";
   triangle?: boolean;
 };
@@ -16,6 +15,8 @@ export default function MessageBubble({
   align,
   triangle,
 }: Props) {
+  const timeString = time?.toLocaleTimeString().replace(/:\d{2}\s/, " ");
+
   return (
     <View>
       <View
@@ -48,7 +49,7 @@ export default function MessageBubble({
               : { alignSelf: "flex-end" },
           ]}
         >
-          {time}
+          {timeString}
         </ThemedText>
       )}
     </View>

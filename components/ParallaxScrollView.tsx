@@ -1,26 +1,17 @@
-import { PropsWithChildren, useEffect } from "react";
-import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { PropsWithChildren } from "react";
+import Animated, { AnimatedRef } from "react-native-reanimated";
 import { StyleSheet, View } from "react-native";
 
 const HEADER_HEIGHT = 250;
 
-type Props = PropsWithChildren<{}>;
+type Props = PropsWithChildren<{
+  scrollRef: AnimatedRef<Animated.ScrollView>;
+}>;
 
-export default function ParallaxScrollView({ children }: Props) {
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  // TODO: Make sure it scrolls to bottom initially
-
-  useEffect(() => {
-    scrollRef.current?.scrollToEnd({ animated: true });
-  }, []);
-
+export default function ParallaxScrollView({ children, scrollRef }: Props) {
   return (
     <View style={styles.container}>
-      <Animated.ScrollView
-        // contentContainerStyle={{ flex: 1 }}
-        ref={scrollRef}
-        scrollEventThrottle={16}
-      >
+      <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
         <View style={styles.content}>{children}</View>
       </Animated.ScrollView>
     </View>
