@@ -27,7 +27,7 @@ export default function HomeScreen() {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
   const updateEvents = async () => {
-    const res = await fetch("http://localhost:8080/events");
+    const res = await fetch("http://localhost:8080/events?today=true");
     if (!res.ok) {
       alert("An error occurred while fetching events.");
       return;
