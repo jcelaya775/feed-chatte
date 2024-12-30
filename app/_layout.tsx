@@ -1,17 +1,14 @@
-import { Slot, SplashScreen } from "expo-router";
 import "react-native-reanimated";
-import { SessionProvider } from "@/utils/auth/authContext";
-import { useEffect } from "react";
-import { useFonts } from "expo-font";
 import { createTamagui, TamaguiProvider } from "tamagui";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { useColorScheme } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { config } from "@tamagui/config/v3";
+import { SessionProvider } from "@/utils/auth/authContext";
+import { ThemeProvider } from "@react-navigation/core";
+import { DarkTheme, DefaultTheme } from "@react-navigation/native";
+import { Slot, SplashScreen } from "expo-router";
+import { useColorScheme } from "react-native";
+import { useEffect } from "react";
+import { useFonts } from "expo-font";
 
 // GoogleSignin.configure({
 //   webClientId:

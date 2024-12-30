@@ -1,13 +1,14 @@
 import { createContext, type PropsWithChildren, useContext } from "react";
 import { useStorageState } from "../useStorageState";
+import { GetUsersResponse } from "@/utils/types";
 
 const AuthContext = createContext<{
-  signIn: () => void;
+  signIn: (name: string) => Promise<boolean>;
   signOut: () => void;
-  session?: string | null;
+  session?: { user: { id: string; name: string } } | null;
   isLoading: boolean;
 }>({
-  signIn: () => null,
+  signIn: (name: string) => Promise.resolve(false),
   signOut: () => null,
   session: null,
   isLoading: false,
@@ -31,27 +32,37 @@ export function SessionProvider({ children }: PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: async () => {
-          // TODO: Throw/return error/status
-          // Perform sign-in logic here
-          // try {
-          //   console.log("Calling signIn...");
-          //   const signInResponse = await signIn();
-          //   console.log({ signInResponse });
-          //   if (signInResponse?.type === "success") {
-          //     console.log({ signInResponse });
-          //     setSession(signInResponse.data.idToken);
-          //   }
-          // } catch (error) {
-          //   console.error("Error in context signIn");
-          //   console.error(error);
-          // }
-          setSession("xxx");
+        signIn: async (name: string) => {
+          try {
+            const usersResponse = await fetch(
+              `http://localhost:8080/users?name=${name}`,
+            );
+            const users: GetUsersResponse = await usersResponse.json();
+            const user = users?.[0];
+            if (!user) {
+              await fetch("http://localhost:8080/users", {
+                method: "POST",
+                body: JSON.stringify({ name }),
+              });
+            }
+            setSession(
+              JSON.stringify({
+                user: {
+                  id: user.id,
+                  name,
+                },
+              }),
+            );
+            return true;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
         },
         signOut: () => {
           setSession(null);
         },
-        session,
+        session: session ? JSON.parse(session) : null,
         isLoading,
       }}
     >

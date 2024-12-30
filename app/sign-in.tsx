@@ -10,19 +10,18 @@ export default function SignIn() {
   const { signIn } = useSession();
   const [name, setName] = useState("");
 
-  const handleSignIn = () => {
-    if (name === "") {
+  const handleSignIn = async () => {
+    if (!name) {
       alert("Please enter your name.");
       return;
     }
 
-    // TODO: Handle DB and signIn error
-    signIn();
-    console.log("Sign-in successful");
-    setName("");
-    // Navigate after signing in. You may want to tweak this to ensure sign-in is
-    // successful before navigating.
-    router.replace("/");
+    const successful = await signIn(name);
+    if (successful) {
+      router.replace("/");
+    } else {
+      alert("An error occurred while signing in.");
+    }
   };
 
   return (
