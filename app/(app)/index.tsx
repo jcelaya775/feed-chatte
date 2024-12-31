@@ -87,21 +87,23 @@ export default function HomeScreen() {
               flex: 2,
             }}
           >
-            <View style={styles.inner}>
+            <View style={styles.outerContainer}>
               <ParallaxScrollView scrollRef={scrollRef}>
-                {events &&
-                  events.map((event, index) => {
-                    return (
-                      <EventBubble
-                        key={index}
-                        message={event.message}
-                        time={event.time}
-                        align={
-                          session?.user.id === event.userId ? "right" : "left"
-                        }
-                      />
-                    );
-                  })}
+                <View style={styles.innerContainer}>
+                  {events &&
+                    events.map((event, index) => {
+                      return (
+                        <EventBubble
+                          key={index}
+                          message={event.message}
+                          time={event.time}
+                          align={
+                            session?.user.id === event.userId ? "right" : "left"
+                          }
+                        />
+                      );
+                    })}
+                </View>
               </ParallaxScrollView>
             </View>
             <Button
@@ -148,9 +150,13 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "space-between",
   },
-  inner: {
+  outerContainer: {
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 12,
+  },
+  innerContainer: {
+    paddingTop: 12,
+    gap: 12,
   },
 });

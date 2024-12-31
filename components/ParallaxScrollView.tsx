@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import Animated, { AnimatedRef } from "react-native-reanimated";
 import { StyleSheet, View } from "react-native";
 
@@ -9,6 +9,14 @@ type Props = PropsWithChildren<{
 }>;
 
 export default function ParallaxScrollView({ children, scrollRef }: Props) {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      scrollRef.current?.scrollToEnd({ animated: false });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>

@@ -21,7 +21,6 @@ export default function MessageBubble({
     <View>
       <View
         style={[
-          styles.container,
           align === "left"
             ? { alignSelf: "flex-start" }
             : { alignSelf: "flex-end" },
@@ -57,9 +56,6 @@ export default function MessageBubble({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    position: "relative",
-  },
   messageBubble: {
     backgroundColor: "#1cb64a",
     paddingVertical: 14,
