@@ -1,32 +1,57 @@
 import { ThemedText } from "@/components/ThemedText";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Vibration, View } from "react-native";
+import { Dispatch, SetStateAction } from "react";
 
 type Props = {
+  id?: string;
   message: string;
   time?: Date;
   align?: "left" | "right";
   triangle?: boolean;
+  menu?: string | null | undefined;
+  setMenu: Dispatch<SetStateAction<string | null | undefined>>;
 };
 
-// TODO: Fix bubble to size of text
 export default function MessageBubble({
+  id,
   message,
   time,
   align,
   triangle,
+  menu,
+  setMenu,
 }: Props) {
   const timeString = time?.toLocaleTimeString().replace(/:\d{2}\s/, " ");
 
   return (
-    <View>
-      <View
-        style={[
-          align === "left"
-            ? { alignSelf: "flex-start" }
-            : { alignSelf: "flex-end" },
-        ]}
-      >
-        <View style={styles.messageBubble}>
+    <View
+      style={[
+        align === "left"
+          ? { alignSelf: "flex-start" }
+          : { alignSelf: "flex-end" },
+      ]}
+    >
+      <View>
+        <Pressable
+          style={({ pressed }) => [
+            { opacity: pressed && !triangle ? 0.5 : 1.0 },
+            styles.messageBubble,
+          ]}
+          onLongPress={() => {
+            if (triangle || !id) {
+              return;
+            }
+
+            Vibration.vibrate(5);
+            setMenu(id);
+          }}
+          onTouchStart={() => {
+            // For closing the menu
+            if (menu) {
+              setMenu(null);
+            }
+          }}
+        >
           <ThemedText>{message}</ThemedText>
           {triangle && (
             <View
@@ -36,7 +61,7 @@ export default function MessageBubble({
               ]}
             />
           )}
-        </View>
+        </Pressable>
       </View>
       {time && (
         <ThemedText
@@ -66,7 +91,6 @@ const styles = StyleSheet.create({
     display: "flex",
     color: "#ccc",
     fontSize: 12,
-    // paddingTop: 2,
     paddingHorizontal: 16,
   },
   triangle: {

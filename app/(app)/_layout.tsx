@@ -1,11 +1,9 @@
-import { useColorScheme } from "react-native";
-import { useSession } from "@/utils/auth/authContext";
 import { Redirect, Stack } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
+import { useSession } from "@/utils/auth/authContext";
 
 export default function AppLayout() {
   const { session, isLoading } = useSession();
-  const colorScheme = useColorScheme();
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {

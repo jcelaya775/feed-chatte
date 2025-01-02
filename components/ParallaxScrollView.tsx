@@ -2,8 +2,6 @@ import { PropsWithChildren, useEffect } from "react";
 import Animated, { AnimatedRef } from "react-native-reanimated";
 import { StyleSheet, View } from "react-native";
 
-const HEADER_HEIGHT = 250;
-
 type Props = PropsWithChildren<{
   scrollRef: AnimatedRef<Animated.ScrollView>;
 }>;
@@ -19,7 +17,12 @@ export default function ParallaxScrollView({ children, scrollRef }: Props) {
 
   return (
     <View style={styles.container}>
-      <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
+      <Animated.ScrollView
+        // contentContainerStyle={{ overflow: "visible" }}
+        // style={{ overflow: "visible" }}
+        ref={scrollRef}
+        scrollEventThrottle={16}
+      >
         <View style={styles.content}>{children}</View>
       </Animated.ScrollView>
     </View>
@@ -31,10 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#222",
     justifyContent: "center",
     borderRadius: 24,
-  },
-  header: {
-    height: HEADER_HEIGHT,
-    overflow: "hidden",
+    minHeight: 240,
   },
   content: {
     paddingHorizontal: 12,

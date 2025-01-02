@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, StyleSheet, View } from "react-native";
+import { Image, Platform, SafeAreaView, StyleSheet, View } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import EventBubble from "@/components/MessageBubble";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
@@ -8,6 +8,8 @@ import { useSession } from "@/utils/auth/authContext";
 import { Button } from "tamagui";
 import { ThemedText } from "@/components/ThemedText";
 import { Event, GetEventsResponse } from "@/utils/types";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import EditBubble from "@/components/EditBubble";
 
 export const IMAGES = {
   chungusHungry: {
@@ -24,7 +26,10 @@ export const IMAGES = {
 export default function HomeScreen() {
   const { session } = useSession();
   const [events, setEvents] = useState<Event[]>([]);
+  const [activeBubbleMenu, setActiveBubbleMenu] = useState<string | null>();
+
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const insets = useSafeAreaInsets();
 
   const updateEvents = async () => {
     const res = await fetch("http://localhost:8080/events?today=true");
@@ -51,11 +56,19 @@ export default function HomeScreen() {
 
   return (
     <ThemedView style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView
+        style={[
+          { flex: 1 },
+          Platform.OS === "android" && {
+            marginTop: insets.top,
+            // marginBottom: insets.bottom,
+          },
+        ]}
+      >
         <View style={{ flex: 1 }}>
           <View
             style={{
-              flex: 1,
+              flex: 2,
               justifyContent: "center",
               alignItems: "center",
               marginVertical: 8,
@@ -69,6 +82,9 @@ export default function HomeScreen() {
                 message="Hey, feed me!"
                 align="left"
                 triangle={true}
+                id="fake"
+                menu={activeBubbleMenu}
+                setMenu={setActiveBubbleMenu}
               />
             </View>
             <Image
@@ -84,25 +100,36 @@ export default function HomeScreen() {
           </View>
           <View
             style={{
-              flex: 2,
+              flex: 3,
             }}
           >
-            <View style={styles.outerContainer}>
+            <View style={styles.outerMessageContainer}>
               <ParallaxScrollView scrollRef={scrollRef}>
-                <View style={styles.innerContainer}>
+                <View style={styles.innerMessageContainer}>
                   {events &&
-                    events.map((event, index) => {
-                      return (
+                    events.map((event, index) => (
+                      <View
+                        key={index}
+                        style={{
+                          alignItems:
+                            session?.user.id === event.userId
+                              ? "flex-end"
+                              : "flex-start",
+                        }}
+                      >
+                        {activeBubbleMenu === event.id && <EditBubble />}
                         <EventBubble
-                          key={index}
+                          id={event.id}
                           message={event.message}
                           time={event.time}
                           align={
                             session?.user.id === event.userId ? "right" : "left"
                           }
+                          menu={activeBubbleMenu}
+                          setMenu={setActiveBubbleMenu}
                         />
-                      );
-                    })}
+                      </View>
+                    ))}
                 </View>
               </ParallaxScrollView>
             </View>
@@ -144,18 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
   },
-  messageContainer: {
-    flex: 1,
-  },
-  container: {
-    justifyContent: "space-between",
-  },
-  outerContainer: {
+  outerMessageContainer: {
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 12,
   },
-  innerContainer: {
+  innerMessageContainer: {
     paddingTop: 12,
     gap: 12,
   },
