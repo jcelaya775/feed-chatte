@@ -1,15 +1,18 @@
 import { ThemedText } from "@/components/ThemedText";
 import { Pressable, StyleSheet, Vibration, View } from "react-native";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useContext } from "react";
+import EditBubble from "./EditBubble";
+import { TouchContext } from "@/app/(app)";
 
 type Props = {
   id?: string;
   message: string;
   time?: Date;
   align?: "left" | "right";
-  triangle?: boolean;
+  noMenu?: boolean;
   menu?: string | null | undefined;
-  setMenu: Dispatch<SetStateAction<string | null | undefined>>;
+  setMenu?: Dispatch<SetStateAction<string | null | undefined>>;
+  deleteEvent?: (id: string) => void;
 };
 
 export default function MessageBubble({
@@ -17,10 +20,12 @@ export default function MessageBubble({
   message,
   time,
   align,
-  triangle,
+  noMenu,
   menu,
   setMenu,
+  deleteEvent,
 }: Props) {
+  const { screenTouched, setScreenTouched } = useContext(TouchContext);
   const timeString = time?.toLocaleTimeString().replace(/:\d{2}\s/, " ");
 
   return (
@@ -29,38 +34,35 @@ export default function MessageBubble({
         align === "left"
           ? { alignSelf: "flex-start" }
           : { alignSelf: "flex-end" },
+        { zIndex: 0 },
       ]}
     >
       <View>
+        {menu === id && !screenTouched && (
+          <EditBubble id={id} deleteEvent={deleteEvent!} />
+        )}
         <Pressable
           style={({ pressed }) => [
-            { opacity: pressed && !triangle ? 0.5 : 1.0 },
+            { opacity: pressed && !noMenu ? 0.5 : 1.0 },
             styles.messageBubble,
           ]}
           onLongPress={() => {
-            if (triangle || !id) {
+            if (noMenu || !id) {
               return;
             }
+            setScreenTouched(false);
 
             Vibration.vibrate(5);
-            setMenu(id);
+            setMenu!(id);
           }}
           onTouchStart={() => {
-            // For closing the menu
+            // Close the menu
             if (menu) {
-              setMenu(null);
+              setMenu!(null);
             }
           }}
         >
           <ThemedText>{message}</ThemedText>
-          {triangle && (
-            <View
-              style={[
-                styles.triangle,
-                align === "left" ? { left: 18 } : { right: 18 },
-              ]}
-            />
-          )}
         </Pressable>
       </View>
       {time && (
@@ -108,5 +110,28 @@ const styles = StyleSheet.create({
     borderRightColor: "transparent",
     borderBottomColor: "transparent",
     borderLeftColor: "transparent",
+  },
+  popover: {
+    // justifyContent: "center",
+    // padding: 16,
+    // flex: 1,
+    ...StyleSheet.absoluteFillObject,
+  },
+  container: {
+    flex: 1,
+  },
+  popoverContent: {
+    alignItems: "center",
+    // height: "100%",
+    backgroundColor: "white",
+    // justifyContent: "center",
+  },
+  backdrop: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flex: 1,
   },
 });

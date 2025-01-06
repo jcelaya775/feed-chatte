@@ -10,7 +10,7 @@ export type Event = {
   time: Date;
 };
 
-export type Status =
+export type ChatteStatus =
   | "starving"
   | "hungry"
   | "slightlySatisfied"
@@ -32,5 +32,5 @@ export type PostEventsResponse = {
 
 export type ChatteMessageResponse = {
   message: string;
-  status: Status;
+  status: ChatteStatus;
 };

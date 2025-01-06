@@ -7,7 +7,6 @@ export default function AppLayout() {
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
-    console.log("Loading...");
     return <ThemedText>Loading...</ThemedText>;
   }
 

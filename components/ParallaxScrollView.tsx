@@ -31,10 +31,10 @@ export default function ParallaxScrollView({ children, scrollRef }: Props) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#222",
     justifyContent: "center",
     borderRadius: 24,
-    minHeight: 240,
   },
   content: {
     paddingHorizontal: 12,
