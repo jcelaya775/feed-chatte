@@ -8,15 +8,16 @@ import {
   View,
 } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import EventBubble from "@/components/MessageBubble";
+import EventBubble from "@/components/EventBubble";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { createContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ThemedView } from "@/components/ThemedView";
 import { useSession } from "@/utils/auth/authContext";
 import { Button } from "tamagui";
 import { ThemedText } from "@/components/ThemedText";
-import { ChatteStatus, Event, GetEventsResponse } from "@/utils/types";
+import { ChatteEvent, ChatteStatus, GetEventsResponse } from "@/utils/types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { TouchContext } from "@/utils/context";
 
 export const IMAGES = {
   chungusHungry: {
@@ -30,24 +31,15 @@ export const IMAGES = {
   },
 };
 
-type TouchContext = {
-  screenTouched: boolean;
-  setScreenTouched: (touched: boolean) => void;
-};
-
-export const TouchContext = createContext<TouchContext>({
-  screenTouched: false,
-  setScreenTouched: () => {},
-});
-
 export default function HomeScreen() {
   const { session } = useSession();
   const [showChatteBubble, setShowChatteBubble] = useState(true);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<ChatteEvent[]>([]);
   const [chatteMessage, setChatteMessage] = useState<string>("...");
   const [chatteStatus, setChatteStatus] = useState<ChatteStatus>();
   const [screenTouched, setScreenTouched] = useState(false);
   const [activeBubbleMenu, setActiveBubbleMenu] = useState<string | null>();
+  const [refreshing, setRefreshing] = useState(false);
 
   const chatteImage = (() => {
     switch (chatteStatus) {
@@ -61,30 +53,28 @@ export default function HomeScreen() {
         return IMAGES.hungry.uri;
       case "full":
         return IMAGES.chungusFull.uri;
+      default:
+        return IMAGES.hungry.uri;
     }
   })();
-
-  useEffect(() => {
-    console.log({ chatteStatus });
-  }, [chatteStatus]);
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const insets = useSafeAreaInsets();
 
-  const getEvents = async () => {
+  const getEvents = useCallback(async () => {
     const res = await fetch("http://localhost:8080/events?today=true");
     if (!res.ok) {
       alert("An error occurred while fetching events.");
       return;
     }
     const events: GetEventsResponse = await res.json();
-    events.forEach((event: Event) => {
+    events.forEach((event: ChatteEvent) => {
       event.time = new Date(event.time);
     });
     setEvents(events);
-  };
+  }, []);
 
-  const getChatteMessage = async () => {
+  const getChatteMessage = useCallback(async () => {
     const res = await fetch("http://localhost:8080/chatte-message");
     if (!res.ok) {
       alert("An error occurred while fetching Chatte's message.");
@@ -93,11 +83,9 @@ export default function HomeScreen() {
     const message = await res.json();
     setChatteMessage(message.message);
     setChatteStatus(message.status);
-    setShowChatteBubble(true);
-    setScreenTouched(false);
-  };
+  }, []);
 
-  const deleteEvent = async (id: string) => {
+  const deleteEvent = useCallback(async (id: string) => {
     const res = await fetch(`http://localhost:8080/events/${id}`, {
       method: "DELETE",
     });
@@ -107,16 +95,16 @@ export default function HomeScreen() {
     }
     await getEvents();
     await getChatteMessage();
-  };
-
-  useEffect(() => {
-    getChatteMessage();
-    getEvents();
   }, []);
 
+  // useEffect(() => {
+  //   scrollRef.current?.scrollToEnd({ animated: true });
+  // }, [events]);
+
   useEffect(() => {
-    scrollRef.current?.scrollToEnd({ animated: true });
-  }, [events]);
+    getEvents();
+    getChatteMessage();
+  }, []);
 
   useEffect(() => {
     if (screenTouched && showChatteBubble) {
@@ -192,8 +180,14 @@ export default function HomeScreen() {
                 }}
               >
                 <View style={styles.outerMessageContainer}>
-                  <ParallaxScrollView scrollRef={scrollRef}>
-                    <View style={styles.innerMessageContainer}>
+                  <ParallaxScrollView
+                    scrollRef={scrollRef}
+                    refreshing={refreshing}
+                    setRefreshing={setRefreshing}
+                    fetchData={getEvents}
+                    contentContainerStyle={styles.scrollViewContainer}
+                  >
+                    <View style={styles.messageContainer}>
                       {events &&
                         events.map((event, index) => (
                           <View
@@ -269,10 +263,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 12,
   },
-  innerMessageContainer: {
+  messageContainer: {
     flex: 1,
     paddingTop: 12,
+    paddingHorizontal: 12,
     gap: 12,
+  },
+  scrollViewContainer: {
+    flex: 1,
+    paddingVertical: 16,
+    gap: 16,
   },
   triangle: {
     zIndex: -1,

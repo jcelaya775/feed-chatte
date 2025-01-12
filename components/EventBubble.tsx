@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { Pressable, StyleSheet, Vibration, View } from "react-native";
 import React, { Dispatch, SetStateAction, useContext } from "react";
 import EditBubble from "./EditBubble";
-import { TouchContext } from "@/app/(app)";
+import { TouchContext } from "@/utils/context";
 
 type Props = {
   id?: string;
@@ -15,7 +15,7 @@ type Props = {
   deleteEvent?: (id: string) => void;
 };
 
-export default function MessageBubble({
+export default function EventBubble({
   id,
   message,
   time,
@@ -34,7 +34,6 @@ export default function MessageBubble({
         align === "left"
           ? { alignSelf: "flex-start" }
           : { alignSelf: "flex-end" },
-        { zIndex: 0 },
       ]}
     >
       <View>
@@ -62,7 +61,7 @@ export default function MessageBubble({
             }
           }}
         >
-          <ThemedText>{message}</ThemedText>
+          <ThemedText>{message || "I'm hungry now."}</ThemedText>
         </Pressable>
       </View>
       {time && (
@@ -112,9 +111,6 @@ const styles = StyleSheet.create({
     borderLeftColor: "transparent",
   },
   popover: {
-    // justifyContent: "center",
-    // padding: 16,
-    // flex: 1,
     ...StyleSheet.absoluteFillObject,
   },
   container: {
@@ -122,9 +118,7 @@ const styles = StyleSheet.create({
   },
   popoverContent: {
     alignItems: "center",
-    // height: "100%",
     backgroundColor: "white",
-    // justifyContent: "center",
   },
   backdrop: {
     position: "absolute",

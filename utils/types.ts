@@ -3,7 +3,7 @@ export type User = {
   name: string;
 };
 
-export type Event = {
+export type ChatteEvent = {
   id: string;
   userId: string;
   message: string;
@@ -24,7 +24,7 @@ export type PostUsersResponse = {
   name: string;
 };
 
-export type GetEventsResponse = Event[];
+export type GetEventsResponse = ChatteEvent[];
 
 export type PostEventsResponse = {
   id: string;
